@@ -52,10 +52,14 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/')
+@app.route('/index')
 @login_required
 def index():
     return render_template('index.html', username=current_user.username)
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 
 if __name__ == '__main__':
