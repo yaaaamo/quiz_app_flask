@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from models import db, User
+from models import db,Question,User
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///your_database.db'
@@ -61,6 +61,45 @@ def index():
 def home():
     return render_template('base.html')
 
+@app.route('/create-question', methods=['GET', 'POST'])
+@login_required
+def create_question():
+    if request.method == 'POST':
+        question_text = request.form['question_text']
+        answer_1 = request.form['answer_1']
+        answer_2 = request.form['answer_2']
+        answer_3 = request.form.get('answer_3')
+        answer_4 = request.form.get('answer_4')
+        answer_5 = request.form.get('answer_5')
+        correct_answer = request.form['correct_answer']
+        
+        question = Question(
+            question_text=question_text,
+            answer_1=answer_1,
+            answer_2=answer_2,
+            answer_3=answer_3,
+            answer_4=answer_4,
+            answer_5=answer_5,
+            correct_answer=int(correct_answer),
+            user_id=current_user.id
+        )
+        
+        db.session.add(question)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('create_question.html')
+
+@app.route('/view_questions')
+@login_required
+def view_questions():
+    user_id = current_user.id
+    questions = Question.query.filter_by(user_id=user_id).all()
+    return render_template('view_questions.html', questions=questions)
+
+@app.route('/index')
+def goIndex():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
