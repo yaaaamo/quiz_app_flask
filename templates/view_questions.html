@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Your Questions - Quiz App{% endblock %}
+
+{% block content %}
+<h2>Your Questions</h2>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/view.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+<a href="{{ url_for('goIndex') }}" class="btn btn-primary">Go Back</a>
+{% if questions %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Question</th>
+                <th>Answer 1</th>
+                <th>Answer 2</th>
+                <th>Answer 3</th>
+                <th>Answer 4</th>
+                <th>Answer 5</th>
+                <th>Correct Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
+            <tr>
+                <td>{{ question.id }}</td>
+                <td>{{ question.question_text }}</td>
+                <td>{{ question.answer_1 }}</td>
+                <td>{{ question.answer_2 }}</td>
+                <td>{{ question.answer_3 or 'N/A' }}</td>
+                <td>{{ question.answer_4 or 'N/A' }}</td>
+                <td>{{ question.answer_5 or 'N/A' }}</td>
+                <td>{{ question.correct_answer }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>There are no questions available.</p>
+{% endif %}
+{% endblock %}
