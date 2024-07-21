@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, flash, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db,Question,User
@@ -96,6 +96,28 @@ def view_questions():
     user_id = current_user.id
     questions = Question.query.filter_by(user_id=user_id).all()
     return render_template('view_questions.html', questions=questions)
+
+@app.route('/edit_question/<int:question_id>', methods=['GET', 'POST'])
+@login_required
+def edit_question(question_id):
+    question = Question.query.get_or_404(question_id)
+    if question.user_id != current_user.id:
+        flash('You are not authorized to edit this question.')
+        return redirect(url_for('view_questions'))
+    
+    if request.method == 'POST':
+        question.question_text = request.form['question_text']
+        question.answer_1 = request.form['answer_1']
+        question.answer_2 = request.form['answer_2']
+        question.answer_3 = request.form['answer_3']
+        question.answer_4 = request.form['answer_4']
+        question.answer_5 = request.form['answer_5']
+        question.correct_answer = request.form['correct_answer']
+        db.session.commit()
+        flash('Question updated successfully!')
+        return redirect(url_for('view_questions'))
+
+    return render_template('edit_question.html', question=question)
 
 @app.route('/index')
 def goIndex():
