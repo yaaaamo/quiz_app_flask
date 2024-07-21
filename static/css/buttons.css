@@ -22,6 +22,14 @@
     background-color: #0056b3;
 }
 
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
 /* Ensure form buttons look like links */
 form button {
     font: inherit;
