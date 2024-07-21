@@ -18,14 +18,18 @@ class User(UserMixin, db.Model):
     
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user_question_id = db.Column(db.Integer, nullable=False)
     question_text = db.Column(db.Text, nullable=False)
-    answer_1 = db.Column(db.String(255), nullable=False)
-    answer_2 = db.Column(db.String(255), nullable=False)
-    answer_3 = db.Column(db.String(255), nullable=True)
-    answer_4 = db.Column(db.String(255), nullable=True)
-    answer_5 = db.Column(db.String(255), nullable=True)
-    correct_answer = db.Column(db.Integer, nullable=False)  # Stores the index of the correct answer (1-5)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Assuming a 'User' model exists
+    answer_1 = db.Column(db.String(150), nullable=False)
+    answer_2 = db.Column(db.String(150), nullable=False)
+    answer_3 = db.Column(db.String(150))
+    answer_4 = db.Column(db.String(150))
+    answer_5 = db.Column(db.String(150))
+    correct_answer = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'user_question_id', name='unique_user_question'),)
+
 
     def __repr__(self):
         return f'<Question {self.id}>'

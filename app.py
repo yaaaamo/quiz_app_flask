@@ -61,34 +61,45 @@ def index():
 def home():
     return render_template('base.html')
 
-@app.route('/create-question', methods=['GET', 'POST'])
+@app.route('/create_question', methods=['GET', 'POST'])
 @login_required
 def create_question():
     if request.method == 'POST':
         question_text = request.form['question_text']
         answer_1 = request.form['answer_1']
         answer_2 = request.form['answer_2']
-        answer_3 = request.form.get('answer_3')
-        answer_4 = request.form.get('answer_4')
-        answer_5 = request.form.get('answer_5')
+        answer_3 = request.form['answer_3']
+        answer_4 = request.form['answer_4']
+        answer_5 = request.form['answer_5']
         correct_answer = request.form['correct_answer']
-        
-        question = Question(
+
+        # Calculate user_question_id
+        last_question = Question.query.filter_by(user_id=current_user.id).order_by(Question.user_question_id.desc()).first()
+        if last_question:
+            user_question_id = last_question.user_question_id + 1
+        else:
+            user_question_id = 1
+
+        new_question = Question(
+            user_question_id=user_question_id,
             question_text=question_text,
             answer_1=answer_1,
             answer_2=answer_2,
             answer_3=answer_3,
             answer_4=answer_4,
             answer_5=answer_5,
-            correct_answer=int(correct_answer),
+            correct_answer=correct_answer,
             user_id=current_user.id
         )
-        
-        db.session.add(question)
+
+        db.session.add(new_question)
         db.session.commit()
+
+        flash('Question created successfully!')
         return redirect(url_for('index'))
 
     return render_template('create_question.html')
+
 
 @app.route('/view_questions')
 @login_required
