@@ -130,6 +130,20 @@ def edit_question(question_id):
 
     return render_template('edit_question.html', question=question)
 
+@app.route('/delete_question/<int:question_id>', methods=['POST'])
+@login_required
+def delete_question(question_id):
+    question = Question.query.get_or_404(question_id)
+    if question.user_id != current_user.id:
+        flash('You are not authorized to delete this question.')
+        return redirect(url_for('view_questions'))
+
+    db.session.delete(question)
+    db.session.commit()
+    flash('Question deleted successfully!')
+    return redirect(url_for('view_questions'))
+
+
 @app.route('/index')
 def goIndex():
     return render_template('index.html')
