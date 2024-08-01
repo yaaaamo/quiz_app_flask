@@ -4,14 +4,14 @@
 
 {% block content %}
 <h2>Your Questions</h2>
+<a href="{{ url_for('goIndex') }}" class="btn btn-primary">Go Back</a>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/view.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
-<a href="{{ url_for('goIndex') }}" class="btn btn-primary">Go Back</a>
 {% if questions %}
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>User Question ID</th>
                 <th>Question</th>
                 <th>Answer 1</th>
                 <th>Answer 2</th>
@@ -19,13 +19,14 @@
                 <th>Answer 4</th>
                 <th>Answer 5</th>
                 <th>Correct Answer</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for question in questions %}
             <tr>
                 <td>{{ question.user_question_id }}</td>
-                <td>{{ question.question_text }}</td>
+                <td>{{ question.question_text|safe }}</td>
                 <td>{{ question.answer_1 }}</td>
                 <td>{{ question.answer_2 }}</td>
                 <td>{{ question.answer_3 or 'N/A' }}</td>
@@ -47,4 +48,27 @@
 {% else %}
     <p>There are no questions available.</p>
 {% endif %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (window.MathJax) {
+            MathJax.typeset();
+        }
+    });
+</script>
 {% endblock %}
+
+
+
