@@ -129,7 +129,6 @@ def edit_question(question_id):
     return render_template('edit_question.html', question=question)
 
 
-
 @app.route('/view_questions')
 @login_required
 def view_questions():
