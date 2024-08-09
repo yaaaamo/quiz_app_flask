@@ -19,7 +19,7 @@
                 <th>Answer 4</th>
                 <th>Answer 5</th>
                 <th>Correct Answer</th>
-                <th>Actions</th>
+                <th>Label</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +33,7 @@
                 <td>{{ question.answer_4 or 'N/A' }}</td>
                 <td>{{ question.answer_5 or 'N/A' }}</td>
                 <td>{{ question.correct_answer }}</td>
+                <td>{{ question.label or 'No Label' }}</td> 
                 <td>
                     <form action="{{ url_for('edit_question', question_id=question.id) }}" method="get" style="display: inline;">
                         <button type="submit" class="btn btn-secondary">Edit</button>

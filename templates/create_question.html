@@ -29,6 +29,12 @@
         
         <label for="correct_answer">Correct Answer (1-5):</label>
         <input type="number" id="correct_answer" name="correct_answer" min="1" max="5" required>
+
+        <div class="form-group">
+            <label for="label">Label (optional):</label>
+            <input type="text" name="label" class="form-control" value="{{ question.label if question else '' }}">
+        </div>
+        
         
         <button type="submit" class="btn btn-primary">Create Question</button>
         <a href="{{ url_for('goIndex') }}" class="btn btn-primary">Go Back</a>

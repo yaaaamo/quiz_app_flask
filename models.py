@@ -26,6 +26,7 @@ class Question(db.Model):
     answer_4 = db.Column(db.String(150))
     answer_5 = db.Column(db.String(150))
     correct_answer = db.Column(db.Integer, nullable=False)
+    label = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     __table_args__ = (db.UniqueConstraint('user_id', 'user_question_id', name='unique_user_question'),)

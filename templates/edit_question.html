@@ -32,6 +32,12 @@
         
         <button type="submit" class="btn btn-primary">Update Question</button>
         <a href="{{ url_for('goIndex') }}" class="btn btn-primary">Go Back</a>
+
+        <div class="form-group">
+            <label for="label">Label (optional):</label>
+            <input type="text" name="label" class="form-control" value="{{ question.label if question else '' }}">
+        </div>
+        
     </form>
 </div>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>

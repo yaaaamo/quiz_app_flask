@@ -76,6 +76,7 @@ def create_question():
         answer_4 = request.form['answer_4']
         answer_5 = request.form['answer_5']
         correct_answer = request.form['correct_answer']
+        label = request.form.get('label')
 
         # Calculate user_question_id
         last_question = Question.query.filter_by(user_id=current_user.id).order_by(Question.user_question_id.desc()).first()
@@ -93,7 +94,8 @@ def create_question():
             answer_4=answer_4,
             answer_5=answer_5,
             correct_answer=correct_answer,
-            user_id=current_user.id
+            user_id=current_user.id,
+            label=label
         )
 
         db.session.add(new_question)
@@ -121,6 +123,7 @@ def edit_question(question_id):
         question.answer_4 = request.form['answer_4']
         question.answer_5 = request.form['answer_5']
         question.correct_answer = request.form['correct_answer']
+        question.label = request.form.get('label')
 
         db.session.commit()
         flash('Question updated successfully!')
